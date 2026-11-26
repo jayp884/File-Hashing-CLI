@@ -10,8 +10,27 @@ def generate_hash(file_path, algorithm):
     # Return the hash value
     return hash_value
 
+def save_hash(hash_value, output_file):
+    # Open the output file in write mode
+    with open(output_file, "w") as file:
+        # Write the generated hash to the file
+        file.write(hash_value)
+
+    # Display a confirmation message
+    print("Hash saved to:", output_file)
+
 parser = argparse.ArgumentParser(description="File Hashing Tool")
+
+
 parser.add_argument("file", help="Path to the input file")
+
+parser.add_argument(
+    # Short and long options
+    "-s", "--save",
+    # Help description
+    help="File to save the hash"
+)
+
 parser.add_argument(
     # Short and long options
     "-a", "--algorithm",
@@ -23,4 +42,9 @@ parser.add_argument(
     help="Select hashing algorithm"
 )
 args = parser.parse_args()
-print(generate_hash(args.file, args.algorithm))
+hash_value = generate_hash(args.file, args.algorithm)
+
+if args.save:
+    save_hash(hash_value, args.save)
+else:
+    print(hash_value)
