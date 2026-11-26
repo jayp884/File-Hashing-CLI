@@ -1,4 +1,5 @@
 import hashlib
+import argparse
 
 def generate_hash(file_path):
     # Read the file in binary mode
