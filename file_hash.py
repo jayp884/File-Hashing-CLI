@@ -19,6 +19,17 @@ def save_hash(hash_value, output_file):
     # Display a confirmation message
     print("Hash saved to:", output_file)
 
+def compare_hash(hash_value, saved_file):
+    # Read the previously saved hash
+    with open(saved_file, "r") as file:
+        saved_hash = file.read().strip()
+
+    # Compare both hash values
+    if hash_value == saved_hash:
+        print("Hash Match: File integrity verified.")
+    else:
+        print("Hash Mismatch: File contents or hashing algorithm may differ.")
+
 parser = argparse.ArgumentParser(description="File Hashing Tool")
 
 
@@ -41,10 +52,20 @@ parser.add_argument(
     # Help description
     help="Select hashing algorithm"
 )
+parser.add_argument(
+    "-c", "--compare",
+    help="File containing the saved hash"
+)
+
 args = parser.parse_args()
+
 hash_value = generate_hash(args.file, args.algorithm)
+
+if args.compare:
+    compare_hash(hash_value, args.compare)
 
 if args.save:
     save_hash(hash_value, args.save)
-else:
+
+if not args.save and not args.compare:
     print(hash_value)
