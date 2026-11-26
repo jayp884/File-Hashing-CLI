@@ -57,6 +57,13 @@ parser.add_argument(
     help="File containing the saved hash"
 )
 
+# Allow the user to display the generated hash
+parser.add_argument(
+    "-p", "--print",
+    action="store_true",
+    help="Display the hash"
+)
+
 args = parser.parse_args()
 
 hash_value = generate_hash(args.file, args.algorithm)
@@ -67,5 +74,8 @@ if args.compare:
 if args.save:
     save_hash(hash_value, args.save)
 
-if not args.save and not args.compare:
-    print(hash_value)
+# Display the hash when requested or by default
+if args.print or (not args.save and not args.compare):
+    print("Algorithm:", args.algorithm)
+    print("File:", args.file)
+    print("Hash:", hash_value)
