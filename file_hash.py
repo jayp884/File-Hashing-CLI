@@ -1,5 +1,6 @@
 import hashlib
 import argparse
+from pathlib import Path
 
 def generate_hash(file_path, algorithm):
     # Initialize the selected hashing algorithm
@@ -71,6 +72,15 @@ args = parser.parse_args()
 
 # Error handling
 try:
+    # Prevent accidental file overwriting
+    if args.save:
+        if Path(args.file).resolve() == Path(args.save).resolve():
+            raise ValueError("Cannot overwrite the original file.")
+
+        if args.compare:
+            if Path(args.compare).resolve() == Path(args.save).resolve():
+                raise ValueError("Cannot overwrite the comparison file.")
+            
     hash_value = generate_hash(args.file, args.algorithm)
 
     if args.compare:
