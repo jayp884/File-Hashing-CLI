@@ -2,13 +2,16 @@ import hashlib
 import argparse
 
 def generate_hash(file_path, algorithm):
-    # Read the file in binary mode
+    # Initialize the selected hashing algorithm
+    hash_object = hashlib.new(algorithm)
+
+    # Read the file in small chunks
     with open(file_path, "rb") as file:
-        data = file.read()
-    # Generate the hash using the selected algorithm
-    hash_value = hashlib.new(algorithm, data).hexdigest()
-    # Return the hash value
-    return hash_value
+        while chunk := file.read(4096):
+            hash_object.update(chunk)
+
+    # Return the generated hash
+    return hash_object.hexdigest()
 
 def save_hash(hash_value, output_file):
     # Open the output file in write mode
