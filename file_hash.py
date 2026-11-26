@@ -66,16 +66,30 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-hash_value = generate_hash(args.file, args.algorithm)
+# Error handling
+try:
+    hash_value = generate_hash(args.file, args.algorithm)
 
-if args.compare:
-    compare_hash(hash_value, args.compare)
+    if args.compare:
+        compare_hash(hash_value, args.compare)
 
-if args.save:
-    save_hash(hash_value, args.save)
+    if args.save:
+        save_hash(hash_value, args.save)
 
-# Display the hash when requested or by default
-if args.print or (not args.save and not args.compare):
-    print("Algorithm:", args.algorithm)
-    print("File:", args.file)
-    print("Hash:", hash_value)
+    # Display the hash when requested or by default
+    if args.print or (not args.save and not args.compare):
+        print("Algorithm:", args.algorithm)
+        print("File:", args.file)
+        print("Hash:", hash_value)
+
+except FileNotFoundError:
+    print("Error: File not found.")
+
+except PermissionError:
+    print("Error: Permission denied.")
+
+except ValueError as error:
+    print("Error:", error)
+
+except OSError as error:
+    print("Error:", error)
